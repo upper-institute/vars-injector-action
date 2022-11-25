@@ -2,7 +2,7 @@ const AWS = require('aws-sdk')
 
 export const configure = () => {
 
-    region = process.env.AWS_REGION || false
+    let region = process.env.AWS_REGION || false
 
     if (region) {
         AWS.config.update({ region })
