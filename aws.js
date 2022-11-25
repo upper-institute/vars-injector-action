@@ -11,7 +11,7 @@ export const configure = () => {
 }
 
 
-export const getFromSSMParameter = async(varPath, decryption) => {
+export const getFromSSMParameter = async (varPath, decryption) => {
 
    const ssm = new AWS.SSM()
 

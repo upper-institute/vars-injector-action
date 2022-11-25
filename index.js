@@ -32,55 +32,60 @@ const parseVars = (vars) => {
         }
     }
 
-    return vars 
+    return vars
 
 }
 
 
-try {
-    const driver = core.getInput('driver')
-    const path = core.getInput('path')
-    const prefix = core.getInput('prefix') || ''
-    const sensitive = core.getBooleanInput('sensitive')
+async function main() {
+    try {
+        const driver = core.getInput('driver')
+        const path = core.getInput('path')
+        const prefix = core.getInput('prefix') || ''
+        const sensitive = core.getBooleanInput('sensitive')
 
-    let varsFromSource = null
+        let varsFromSource = null
 
-    console.log(`Injecting environment variables from "${path}" (driver: "${driver}")`)
+        console.log(`Injecting environment variables from "${path}" (driver: "${driver}")`)
 
-    switch (driver) {
-        case 'aws.ssm_parameter':
-            aws.configure()
+        switch (driver) {
+            case 'aws.ssm_parameter':
+                aws.configure()
 
-            varsFromSource = aws.getFromSSMParameter(
-                path,
-                process.env.AWS_SSM_DECRYPT === 'true'
-            )
+                varsFromSource = await aws.getFromSSMParameter(
+                    path,
+                    process.env.AWS_SSM_DECRYPT === 'true'
+                )
 
-            break;
+                break;
 
-        default:
-            throw new Error(`Invalid driver: ${driver}`)
-    }
-
-    core.debug(`varsFromSource: ${varsFromSource}`)
-
-    const vars = parseVars(varsFromSource)
-
-    for (let [key, value] of vars) {
-
-        const envKey = `${prefix}${key}`
-
-        console.log(`Set "$${envKey}" environment variable`)
-
-        if (sensitive) {
-            core.maskValue(value)
+            default:
+                throw new Error(`Invalid driver: ${driver}`)
         }
 
-        core.setEnvironmentVar(envKey, value)
+        core.debug(`varsFromSource: ${varsFromSource}`)
+
+        const vars = parseVars(varsFromSource)
+
+        for (let [key, value] of vars) {
+
+            const envKey = `${prefix}${key}`
+
+            console.log(`Set "$${envKey}" environment variable`)
+
+            if (sensitive) {
+                core.maskValue(value)
+            }
+
+            core.setEnvironmentVar(envKey, value)
+        }
+
+        console.log(`${vars.length} environment vars parsed`)
+
+    } catch (error) {
+        core.setFailed(error.message)
     }
-
-    console.log(`${vars.length} environment vars parsed`)
-
-} catch (error) {
-    core.setFailed(error.message)
 }
+
+
+main().catch(core.setFailed)
