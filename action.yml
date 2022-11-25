@@ -1,0 +1,21 @@
+name: 'Variables Injector Action'
+description: 'Action to inject variables from multiple sources in your GitHub Actions workflow'
+inputs:
+  path:
+    description: 'Path of the parameter (according to driver specification)'
+    required: true
+  driver:
+    description: 'Which driver to use'
+    required: true
+    default: 'aws.ssm_parameter'
+  prefix:
+    description: 'Prefix for environment variables, example: VARS_'
+    required: false
+    default: ''
+  sensitive:
+    description: 'Mask values from GitHub log'
+    required: true
+    default: 'true'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
