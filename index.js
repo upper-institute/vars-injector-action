@@ -5,7 +5,6 @@ const aws = require('./aws')
 
 const parseVars = (vars) => {
 
-
     if (vars === null) {
         return []
     }
