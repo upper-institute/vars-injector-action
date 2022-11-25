@@ -7,7 +7,7 @@ const parseVars = (vars) => {
 
 
     if (vars === null) {
-        return varsToApply
+        return []
     }
 
     if (Array.isArray(vars)) {
@@ -31,6 +31,8 @@ const parseVars = (vars) => {
             return [vars.split('=')]
         }
     }
+
+    return vars 
 
 }
 
@@ -59,6 +61,8 @@ try {
         default:
             throw new Error(`Invalid driver: ${driver}`)
     }
+
+    core.debug(`varsFromSource: ${varsFromSource}`)
 
     const vars = parseVars(varsFromSource)
 
