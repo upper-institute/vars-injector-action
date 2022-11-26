@@ -73,7 +73,7 @@ async function main() {
             console.log(`Set "$${envKey}" environment variable`)
 
             if (sensitive) {
-                core.maskValue(value)
+                core.setSecret(value)
             }
 
             core.setEnvironmentVar(envKey, value)
