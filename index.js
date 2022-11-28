@@ -75,8 +75,8 @@ async function main() {
             if (sensitive) {
                 core.setSecret(value)
             }
-
-            core.setEnvironmentVar(envKey, value)
+            
+            core.exportVariable(envKey, value)
         }
 
         console.log(`${vars.length} environment vars parsed`)
