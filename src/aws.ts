@@ -34,15 +34,21 @@ export const getFromSSMParameters = async (basePath: string, decryption: boolean
                     return
                 }
 
-                if (!data.Parameters || data.Parameters.length == 0) {
+                if (params.NextToken) {
                     delete params.NextToken
+                }
+
+                if (!data.Parameters || data.Parameters.length == 0) {
                     resolve(null)
                     return
                 }
 
                 for (let parameter of data.Parameters) {
-                    
+
                     core.info(`Getting value from SSM Parameter: ${parameter.Name}`)
+
+                    core.debug(`Parameter name: ${parameter.Name}`)
+                    core.debug(`Parameter value: ${parameter.Value}`)
 
                     if (parameter.Name && parameter.Value) {
 
@@ -55,7 +61,8 @@ export const getFromSSMParameters = async (basePath: string, decryption: boolean
 
                 }
 
-
+                params.NextToken = data.NextToken
+                resolve(null)
 
             })
         })

@@ -32,7 +32,7 @@ async function main() {
             throw new Error(`Invalid driver: ${driver}`)
     }
 
-    if (kv === null) {
+    if (kv === null || kv.size == 0) {
         core.warning(`No values found to be injected in the workflow execution`)
         return
 
