@@ -1,6 +1,6 @@
-import AWS from 'aws-sdk'
+import * as AWS from 'aws-sdk'
 import { GetParametersByPathRequest, GetParametersByPathResult } from 'aws-sdk/clients/ssm'
-import core from '@actions/core'
+import * as core from '@actions/core'
 
 export const configure = () => {
 
