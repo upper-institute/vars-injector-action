@@ -6,6 +6,7 @@ async function main() {
     const driver = core.getInput('driver')
     const path = core.getInput('path')
     const prefix = core.getInput('prefix') || ''
+    const substrSeparator = core.getInput('substr_separator') || ''
     const sensitive = core.getBooleanInput('sensitive')
 
     core.info(`Injecting environment variables from "${path}" (driver: "${driver}")`)
@@ -46,6 +47,12 @@ async function main() {
 
         if (sensitive) {
             core.setSecret(value)
+        }
+
+        const sep = substrSeparator.length > 0 ? value.indexOf(substrSeparator)+1 : -1
+
+        if (sep > 0) {
+            value = value.substring(sep)
         }
         
         core.exportVariable(envKey, value)

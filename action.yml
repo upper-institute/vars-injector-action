@@ -12,6 +12,10 @@ inputs:
     description: 'Prefix for environment variables, example: VARS_'
     required: false
     default: ''
+  substr_separator:
+    description: 'Separator of value to substring from'
+    required: false
+    default: ''
   sensitive:
     description: 'Mask values from GitHub log'
     required: true
